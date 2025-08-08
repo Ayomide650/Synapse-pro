@@ -65,13 +65,20 @@ class Database {
       'timeout': 'moderation/temp_punishments.json',
       'modlog': 'moderation/server_configs.json',
       
+      // Feature Commands
+      'timer': 'features/timers.json',
+      'remindme': 'features/reminders.json',
+      
       // Server Features
       'giveaway': 'features/giveaways.json',
-      'remindme': 'features/reminders.json',
       'antilink': 'features/antilink_configs.json',
       'filter': 'features/word_filters.json',
       'welcome': 'features/welcome_configs.json',
-      'ff-verify': 'features/verification_data.json'
+      'ff-verify': 'features/verification_data.json',
+      // Stats Tracking
+      'ping': 'features/command_stats.json',
+      'uptime': 'features/command_stats.json',
+      'botinfo': 'features/command_stats.json'
     };
     
     // Track write operations for better logging
@@ -407,6 +414,20 @@ class Database {
     }
   }
 
+  async trackCommand(commandName) {
+    const today = new Date().toISOString().split('T')[0];
+    const data = await this.read('features/command_stats.json');
+    
+    if (!data[today]) {
+      data[today] = { total: 0, commands: {} };
+    }
+    
+    data[today].total = (data[today].total || 0) + 1;
+    data[today].commands[commandName] = (data[today].commands[commandName] || 0) + 1;
+    
+    await this.write('features/command_stats.json', data);
+  }
+
   // Command-specific helper methods
   async readUserData(userId, dataType = 'balance') {
     const fileName = this.getFileForDataType(dataType);
@@ -471,7 +492,43 @@ class Database {
       'antilink': { enabled: false, action: 'warn' },
       'welcome': { enabled: false, channel: null, message: null },
       'levelroles': {},
-      'rankroles': {}
+      'rankroles': {},
+      'levelConfig': {
+        xpEnabled: true,
+        minXpGain: 15,
+        maxXpGain: 25,
+        xpCooldown: 10000,
+        announceLevel: true,
+        disabledChannels: [],
+      },
+      'economyConfig': {
+        currencySymbol: '🪙',
+        currencyName: 'coins',
+        minBet: 10,
+        maxBet: 1000,
+        dailyReward: 100,
+        streakBonus: true,
+        streakMultiplier: 10,
+        gambling: {
+          enabled: true,
+          minBet: 10,
+          maxBet: 1000,
+          multipliers: {
+            coinflip: 2,
+            dice: 6
+          }
+        }
+      },
+      'timerConfig': {
+        maxActiveTimers: 5,
+        maxDuration: 7 * 24 * 60 * 60 * 1000, // 7 days
+        minDuration: 1000, // 1 second
+      },
+      'reminderConfig': {
+        maxActiveReminders: 10,
+        maxDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+        minDuration: 60000, // 1 minute
+      },
     };
     return defaults[dataType] || {};
   }
@@ -763,6 +820,22 @@ class Database {
     } catch (error) {
       console.error('❌ Error during shutdown:', error);
     }
+  }
+
+  async logModerationAction(guildId, action) {
+    const fileName = `moderation/server_configs.json`;
+    const data = await this.read(fileName);
+
+    if (!data[guildId]) {
+      data[guildId] = { moderationLogs: [] };
+    }
+
+    data[guildId].moderationLogs.push({
+      action,
+      timestamp: new Date().toISOString(),
+    });
+
+    await this.write(fileName, data);
   }
 }
 
