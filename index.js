@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const database = require('./utils/database');
 const ReminderHandler = require('./handlers/ReminderHandler');
+const GiveawayHandler = require('./handlers/GiveawayHandler');
+const ModerationHandler = require('./handlers/ModerationHandler');
 
 // Create Discord client
 const client = new Client({
@@ -62,16 +64,20 @@ if (fs.existsSync(eventsPath)) {
   }
 }
 
-// Bot ready event
+// Bot ready event - initialize everything
 client.once('ready', async () => {
-  console.log(`✅ Logged in as ${client.user.tag}!`);
-  console.log(`📊 Serving ${client.guilds.cache.size} servers with ${client.users.cache.size} users`);
-  
   // Initialize database
   await database.createInitialDirectoryStructure();
   
-  // Start reminder handler
-  ReminderHandler.start(client);
+  // Start handlers
+  const reminderHandler = new ReminderHandler(client);
+  await reminderHandler.start();
+  
+  const giveawayHandler = new GiveawayHandler(client);
+  await giveawayHandler.start();
+  
+  const moderationHandler = new ModerationHandler(client);
+  await moderationHandler.start();
   
   // Register slash commands
   const rest = new REST().setToken(process.env.DISCORD_TOKEN);
@@ -87,42 +93,6 @@ client.once('ready', async () => {
     console.log('✅ Successfully reloaded application (/) commands.');
   } catch (error) {
     console.error('❌ Error refreshing commands:', error);
-  }
-  
-  // Set bot status
-  client.user.setActivity('Managing servers', { type: 'WATCHING' });
-});
-
-// Handle slash command interactions
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isChatInputCommand()) return;
-  
-  const command = client.commands.get(interaction.commandName);
-  
-  if (!command) {
-    console.error(`No command matching ${interaction.commandName} was found.`);
-    return;
-  }
-  
-  try {
-    // Track command usage
-    await database.trackCommandUsage(interaction.commandName, interaction.user.id, interaction.guild?.id);
-    
-    // Execute command
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(`Error executing command ${interaction.commandName}:`, error);
-    
-    const errorMessage = { 
-      content: 'There was an error while executing this command!', 
-      ephemeral: true 
-    };
-    
-    if (interaction.replied || interaction.deferred) {
-      await interaction.followUp(errorMessage);
-    } else {
-      await interaction.reply(errorMessage);
-    }
   }
 });
 
