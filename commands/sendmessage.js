@@ -30,7 +30,7 @@ module.exports = {
       const sent = await channel.send(message);
       await interaction.reply({ content: `✅ Message sent to ${channel}`, ephemeral: true });
 
-      // Log the message
+      
       const messageData = {
         type: 'sendmessage',
         content: message,
