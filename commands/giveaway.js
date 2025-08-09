@@ -66,6 +66,8 @@ async function endGiveaway(giveawayId, forceEnd = false) {
 
 // --- Command Definition ---
 module.exports = {
+  name: 'giveaway',
+  description: 'Create and manage server giveaways',
   data: new SlashCommandBuilder()
     .setName('giveaway')
     .setDescription('Create and manage giveaways')
@@ -156,11 +158,11 @@ module.exports = {
     await interaction.reply({ content: `✅ Giveaway ${giveawayId} has been ended and logged to database.`, ephemeral: true });
   },
 
-  
+  // --- Button and Modal Handlers (to be called from your interaction handler) ---
   async handleButton(interaction) {
-    
+    // ...existing code for handling giveaway_setup, giveaway_participate_, giveaway_end_...
   },
   async handleModal(interaction) {
-    
+    // ...existing code for handling giveaway_create modal...
   }
 };
