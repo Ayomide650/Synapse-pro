@@ -9,7 +9,7 @@ module.exports = {
       // Track message activity for stats
       await trackMessageActivity(message);
 
-      // Handle auto-responses
+      
       await handleAutoResponses(message);
 
       // Get server config for XP
