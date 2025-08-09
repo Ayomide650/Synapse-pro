@@ -4,6 +4,8 @@ const database = require('../utils/database');
 const DICE_EMOJIS = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
 
 module.exports = {
+  name: 'dice',
+  description: 'Roll dice and bet coins on the outcome',
   data: new SlashCommandBuilder()
     .setName('dice')
     .setDescription('Roll dice with custom sides and optional betting')
