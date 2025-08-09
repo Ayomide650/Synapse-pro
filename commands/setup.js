@@ -2,6 +2,8 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const database = require('../utils/database');
 
 module.exports = {
+  name: 'setup',
+  description: 'Interactive server setup wizard for configuring bot features',
   data: new SlashCommandBuilder()
     .setName('setup')
     .setDescription('Interactive server setup wizard'),
