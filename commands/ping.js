@@ -15,7 +15,7 @@ module.exports = {
     await database.testGitHubConnection();
     const githubPing = Date.now() - githubStart;
 
-    // Get latency metrics
+    
     const wsPing = interaction.client.ws.ping;
     const botPing = Date.now() - startTime;
 
