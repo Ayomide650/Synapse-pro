@@ -51,7 +51,11 @@ class Database {
       
       // Leveling System
       'level': 'leveling/user_levels.json',
+      'xp': 'leveling/user_levels.json',
       'addxp': 'leveling/user_levels.json',
+      'removexp': 'leveling/user_levels.json',
+      'setxp': 'leveling/user_levels.json',
+      'resetlevels': 'leveling/user_levels.json',
       'leaderboard': 'leveling/user_levels.json',
       'levelroles': 'leveling/level_roles_config.json',
       'rankrole': 'leveling/rank_roles_config.json',
@@ -60,14 +64,30 @@ class Database {
       'warn': 'moderation/user_warnings.json',
       'clearwarnings': 'moderation/user_warnings.json',
       'warnings': 'moderation/user_warnings.json',
+      'ban': 'moderation/temp_punishments.json',
       'tempban': 'moderation/temp_punishments.json',
+      'kick': 'moderation/temp_punishments.json',
       'mute': 'moderation/temp_punishments.json',
+      'unmute': 'moderation/temp_punishments.json',
       'timeout': 'moderation/temp_punishments.json',
+      'untimeout': 'moderation/temp_punishments.json',
+      'softban': 'moderation/temp_punishments.json',
+      'massban': 'moderation/mass_actions.json',
+      'purge': 'moderation/purge_logs.json',
+      'slowmode': 'moderation/server_configs.json',
       'modlog': 'moderation/server_configs.json',
+      'lock': 'moderation/channel_locks.json',
+      'unlock': 'moderation/channel_locks.json',
+      'lockall': 'moderation/channel_locks.json',
+      'unlockall': 'moderation/channel_locks.json',
+      'recreate': 'moderation/channel_actions.json',
       
       // Feature Commands
       'timer': 'features/timers.json',
       'remindme': 'features/reminders.json',
+      'poll': 'features/polls.json',
+      'announce': 'features/announcements.json',
+      'sendmessage': 'features/custom_messages.json',
       
       // Server Features
       'giveaway': 'features/giveaways.json',
@@ -75,10 +95,23 @@ class Database {
       'filter': 'features/word_filters.json',
       'welcome': 'features/welcome_configs.json',
       'ff-verify': 'features/verification_data.json',
-      // Stats Tracking
+      
+      // Stats & Info Tracking
       'ping': 'features/command_stats.json',
       'uptime': 'features/command_stats.json',
-      'botinfo': 'features/command_stats.json'
+      'botinfo': 'features/command_stats.json',
+      'stats': 'features/command_stats.json',
+      'help': 'features/command_stats.json',
+      'setup': 'features/setup_logs.json',
+      'avatar': 'features/command_stats.json',
+      'userinfo': 'features/command_stats.json',
+      'serverinfo': 'features/command_stats.json',
+      'serverinvite': 'features/command_stats.json',
+      'channelinfo': 'features/command_stats.json',
+      'roleinfo': 'features/command_stats.json',
+      'oldestmembers': 'features/command_stats.json',
+      'nickname': 'features/member_changes.json',
+      'weather': 'features/weather_requests.json'
     };
     
     // Track write operations for better logging
@@ -426,6 +459,45 @@ class Database {
     data[today].commands[commandName] = (data[today].commands[commandName] || 0) + 1;
     
     await this.write('features/command_stats.json', data);
+  }
+
+  async trackCommandUsage(commandName, userId, guildId = null) {
+    const timestamp = new Date().toISOString();
+    const today = timestamp.split('T')[0];
+    
+    // Track general command stats
+    await this.trackCommand(commandName);
+    
+    // Track detailed usage if command is mapped
+    const mappedFile = this.commandFiles[commandName];
+    if (mappedFile) {
+      const usageData = await this.read('features/command_usage_logs.json');
+      
+      if (!usageData[today]) {
+        usageData[today] = [];
+      }
+      
+      usageData[today].push({
+        command: commandName,
+        userId: userId,
+        guildId: guildId,
+        timestamp: timestamp,
+        mappedFile: mappedFile
+      });
+      
+      // Keep only last 30 days of usage logs
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      const cutoffDate = thirtyDaysAgo.toISOString().split('T')[0];
+      
+      Object.keys(usageData).forEach(date => {
+        if (date < cutoffDate) {
+          delete usageData[date];
+        }
+      });
+      
+      await this.write('features/command_usage_logs.json', usageData);
+    }
   }
 
   // Command-specific helper methods
