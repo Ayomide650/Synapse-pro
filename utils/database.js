@@ -7,7 +7,7 @@ class Database {
   constructor() {
     this.cache = new Map();
     
-    // Handle both old and new config structures
+    
     const currentConfig = typeof config.getCurrentConfig === 'function' 
       ? config.getCurrentConfig() 
       : config;
