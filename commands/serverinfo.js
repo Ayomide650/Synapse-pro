@@ -9,7 +9,7 @@ module.exports = {
     const owner = await guild.fetchOwner();
     const stats = await database.readServerData(guild.id, 'stats');
 
-    // Get feature list with emojis
+    
     const features = guild.features.map(feature =>
       `${feature.split('_').map(word =>
         word.charAt(0) + word.slice(1).toLowerCase()
