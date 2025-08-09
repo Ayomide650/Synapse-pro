@@ -156,11 +156,11 @@ module.exports = {
     await interaction.reply({ content: `✅ Giveaway ${giveawayId} has been ended and logged to database.`, ephemeral: true });
   },
 
-  // --- Button and Modal Handlers (to be called from your interaction handler) ---
+  
   async handleButton(interaction) {
-    // ...existing code for handling giveaway_setup, giveaway_participate_, giveaway_end_...
+    
   },
   async handleModal(interaction) {
-    // ...existing code for handling giveaway_create modal...
+    
   }
 };
