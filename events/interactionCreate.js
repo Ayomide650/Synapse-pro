@@ -13,7 +13,7 @@ module.exports = {
       }
       
       try {
-        // Track command usage
+        
         await database.trackCommand(interaction.commandName);
         
         // Execute command
