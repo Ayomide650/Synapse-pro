@@ -26,7 +26,7 @@ module.exports = {
     try {
       await interaction.deferReply();
 
-      // Track command usage
+      
       await database.trackCommandUsage('chatgpt', interaction.user.id, interaction.guild.id);
 
       const message = interaction.options.getString('message');
