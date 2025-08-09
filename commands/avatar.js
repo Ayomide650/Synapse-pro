@@ -44,7 +44,7 @@ module.exports = {
 
     await interaction.reply({ embeds: [embed] });
 
-    // Log command usage to the database
+    
     await database.logCommandUsage(interaction.guild.id, interaction.user.id, this.name);
   },
 };
