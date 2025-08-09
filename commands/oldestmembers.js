@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const database = require('../utils/database');
-
+//
 module.exports = {
   name: 'oldestmembers',
   description: 'Lists the members with the oldest Discord accounts.',
