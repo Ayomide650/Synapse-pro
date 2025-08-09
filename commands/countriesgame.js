@@ -2,7 +2,7 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const database = require('../utils/database');
 
-// list of countries
+// Comprehensive list of countries
 const COUNTRIES = [
   'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Australia', 'Austria',
   'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan',
@@ -30,6 +30,8 @@ const COUNTRIES = [
 const activeGames = new Map();
 
 module.exports = {
+  name: 'countriesgame',
+  description: 'Play an interactive countries listing game against AI or other players',
   data: new SlashCommandBuilder()
     .setName('countriesgame')
     .setDescription('Play a countries listing game - PvAI or PvP!'),
