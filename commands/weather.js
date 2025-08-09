@@ -3,9 +3,11 @@ const axios = require('axios');
 const database = require('../utils/database');
 
 const WEATHER_API_KEY = '33133755e9ca4490862114921250608';
-const BASE_URL = 'https://api.weatherapi.com/v1'; 
+const BASE_URL = 'https://api.weatherapi.com/v1'; // Changed to HTTPS
 
 module.exports = {
+  name: 'weather',
+  description: 'Get current weather conditions and 5-day forecast for any location',
   data: new SlashCommandBuilder()
     .setName('weather')
     .setDescription('Get weather information for a location')
