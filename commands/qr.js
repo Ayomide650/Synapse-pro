@@ -52,7 +52,7 @@ module.exports = {
 
       await interaction.editReply({ embeds: [embed], files: [attachment] });
 
-      // Track command usage
+      
       await database.trackCommandUsage('qr', interaction.user.id, interaction.guild?.id);
 
     } catch (error) {
