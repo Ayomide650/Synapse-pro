@@ -17,7 +17,6 @@ const client = new Client({
   ]
 });
 
-// Create commands collection
 client.commands = new Collection();
 
 // Load commands
