@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-// Using built-in fetch (Node.js 18+)
+const axios = require('axios');
+const database = require('../utils/database');
 
 const WEATHER_API_KEY = '33133755e9ca4490862114921250608';
 const BASE_URL = 'https://api.weatherapi.com/v1'; // Changed to HTTPS
@@ -20,7 +21,7 @@ module.exports = {
 
       // Fetch current weather and forecast
       const response = await fetch(`${BASE_URL}/forecast.json?key=${WEATHER_API_KEY}&q=${encodeURIComponent(city)}&days=5&aqi=no`);
-      
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         console.error('Weather API Error:', response.status, errorData);
@@ -73,7 +74,7 @@ module.exports = {
         const date = new Date(day.date);
         const dayName = index === 0 ? 'Today' : date.toLocaleDateString('en-US', { weekday: 'short' });
         const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        
+
         return [
           `**${dayName} (${dateStr})**`,
           `${day.day.condition.text}`,
@@ -92,9 +93,9 @@ module.exports = {
 
     } catch (error) {
       console.error('Error in weather command:', error);
-      
+
       let errorMessage = '❌ Failed to fetch weather data. Please try again.';
-      
+
       if (error.message.includes('404')) {
         errorMessage = '❌ City not found. Please check the spelling and try again.';
       } else if (error.message.includes('401')) {

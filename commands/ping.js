@@ -6,10 +6,10 @@ module.exports = {
   description: 'Shows bot latency and performance metrics.',
   async execute(interaction) {
     const startTime = Date.now();
-    
+
     // Initial response
     await interaction.reply('🏓 Pinging...');
-    
+
     // Test GitHub sync speed
     const githubStart = Date.now();
     await database.testGitHubConnection();

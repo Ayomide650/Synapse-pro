@@ -1,4 +1,5 @@
-const { EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const database = require('../utils/database');
 
 module.exports = {
   name: 'oldestmembers',
@@ -15,7 +16,7 @@ module.exports = {
   ],
   async execute(interaction) {
     const count = Math.min(interaction.options.getInteger('count') || 10, 25);
-    
+
     const members = [...interaction.guild.members.cache.values()]
       .sort((a, b) => a.user.createdTimestamp - b.user.createdTimestamp)
       .slice(0, count);

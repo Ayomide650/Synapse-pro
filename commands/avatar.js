@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const database = require('../utils/database');
 
 module.exports = {
   name: 'avatar',
@@ -24,8 +25,8 @@ module.exports = {
   async execute(interaction) {
     const member = interaction.options.getMember('user') || interaction.member;
     const type = interaction.options.getString('type') || 'global';
-    
-    const avatarURL = type === 'server' 
+
+    const avatarURL = type === 'server'
       ? member.displayAvatarURL({ size: 4096, dynamic: true })
       : member.user.displayAvatarURL({ size: 4096, dynamic: true });
 
@@ -42,5 +43,8 @@ module.exports = {
       );
 
     await interaction.reply({ embeds: [embed] });
+
+    // Log command usage to the database
+    await database.logCommandUsage(interaction.guild.id, interaction.user.id, this.name);
   },
 };

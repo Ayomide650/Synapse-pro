@@ -14,7 +14,7 @@ module.exports = {
       
       try {
         // Track command usage
-        await database.trackCommandUsage(interaction.commandName, interaction.user.id, interaction.guild?.id);
+        await database.trackCommand(interaction.commandName);
         
         // Execute command
         await command.execute(interaction);

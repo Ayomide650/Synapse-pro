@@ -1,4 +1,3 @@
-
 const { Client, GatewayIntentBits, Collection, REST, Routes } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
@@ -30,17 +29,17 @@ const commands = [];
 for (const file of commandFiles) {
   const filePath = path.join(commandsPath, file);
   const command = require(filePath);
-  
+
   if ('name' in command && 'description' in command) {
     client.commands.set(command.name, command);
-    
+
     // Build command data for registration
     const commandData = {
       name: command.name,
       description: command.description,
       options: command.options || []
     };
-    
+
     commands.push(commandData);
   } else {
     console.log(`[WARNING] The command at ${filePath} is missing a required "name" or "description" property.`);
@@ -51,11 +50,11 @@ for (const file of commandFiles) {
 const eventsPath = path.join(__dirname, 'events');
 if (fs.existsSync(eventsPath)) {
   const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
-  
+
   for (const file of eventFiles) {
     const filePath = path.join(eventsPath, file);
     const event = require(filePath);
-    
+
     if (event.once) {
       client.once(event.name, (...args) => event.execute(...args));
     } else {
@@ -68,28 +67,28 @@ if (fs.existsSync(eventsPath)) {
 client.once('ready', async () => {
   // Initialize database
   await database.createInitialDirectoryStructure();
-  
+
   // Start handlers
   const reminderHandler = new ReminderHandler(client);
   await reminderHandler.start();
-  
+
   const giveawayHandler = new GiveawayHandler(client);
   await giveawayHandler.start();
-  
+
   const moderationHandler = new ModerationHandler(client);
   await moderationHandler.start();
-  
+
   // Register slash commands
   const rest = new REST().setToken(process.env.DISCORD_TOKEN);
-  
+
   try {
     console.log('🔄 Started refreshing application (/) commands.');
-    
+
     await rest.put(
       Routes.applicationCommands(client.user.id),
       { body: commands },
     );
-    
+
     console.log('✅ Successfully reloaded application (/) commands.');
   } catch (error) {
     console.error('❌ Error refreshing commands:', error);

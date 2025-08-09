@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const database = require('../utils/database');
 
 module.exports = {
   name: 'channelinfo',
@@ -13,12 +14,12 @@ module.exports = {
   ],
   async execute(interaction) {
     const channel = interaction.options.getChannel('channel') || interaction.channel;
-    
+
     const overwrites = channel.permissionOverwrites.cache.map(overwrite => {
-      const target = overwrite.type === 'role' 
+      const target = overwrite.type === 'role'
         ? interaction.guild.roles.cache.get(overwrite.id)
         : interaction.guild.members.cache.get(overwrite.id);
-      
+
       return `${target?.toString() || 'Deleted'}: +${overwrite.allow.toArray().join(', ')} -${overwrite.deny.toArray().join(', ')}`;
     });
 

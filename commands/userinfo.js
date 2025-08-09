@@ -1,4 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const database = require('../utils/database');
 
 module.exports = {
   name: 'userinfo',
@@ -48,5 +49,7 @@ module.exports = {
       ]);
 
     await interaction.reply({ embeds: [embed] });
+    
+    await database.logCommandUsage(interaction.user.id, interaction.guild.id, interaction.commandName);
   },
 };
