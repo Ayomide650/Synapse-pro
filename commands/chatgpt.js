@@ -1,9 +1,10 @@
-
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const database = require('../utils/database');
 const axios = require('axios');
 
 module.exports = {
+  name: 'chatgpt',
+  description: 'Chat with AI using ChatGPT integration',
   data: new SlashCommandBuilder()
     .setName('chatgpt')
     .setDescription('Chat with AI using ChatGPT or free alternatives')
@@ -26,7 +27,7 @@ module.exports = {
     try {
       await interaction.deferReply();
 
-      
+      // Track command usage
       await database.trackCommandUsage('chatgpt', interaction.user.id, interaction.guild.id);
 
       const message = interaction.options.getString('message');
@@ -84,7 +85,7 @@ module.exports = {
 
     } catch (error) {
       console.error('Error in chatgpt command:', error);
-      
+
       let errorMessage = '❌ Failed to get AI response. ';
       if (error.message.includes('API key')) {
         errorMessage += 'API key not configured or invalid.';
@@ -130,7 +131,7 @@ module.exports = {
 
   async queryHuggingFace(message) {
     const apiKey = process.env.HUGGINGFACE_API_KEY;
-    
+
     // Use free inference API (no key required for some models)
     const response = await axios.post(
       'https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium',
