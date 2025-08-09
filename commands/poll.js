@@ -15,7 +15,7 @@ module.exports = {
       name: `option${i + 1}`,
       type: 'STRING',
       description: `Poll option ${i + 1}`,
-      required: i < 2, // First 2 options required
+      required: i < 2, 
     })),
     {
       name: 'duration',
