@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const database = require('../utils/database');
-
+//
 module.exports = {
   name: 'roleinfo',
   description: 'Displays information about a role.',
