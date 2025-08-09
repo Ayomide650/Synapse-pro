@@ -6,7 +6,7 @@ module.exports = {
   name: 'guildMemberAdd',
   async execute(member) {
     try {
-      // Get welcome configuration
+      
       const welcomeConfig = await database.readServerData(member.guild.id, 'welcomeConfig');
       
       if (welcomeConfig.enabled && welcomeConfig.channelId) {
