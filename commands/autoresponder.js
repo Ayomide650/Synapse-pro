@@ -48,7 +48,7 @@ module.exports = {
     try {
       await interaction.deferReply();
       
-      // Track command usage
+      
       await database.trackCommandUsage('autoresponder', interaction.user.id, interaction.guild.id);
 
       const subcommand = interaction.options.getSubcommand();
