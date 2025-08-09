@@ -75,7 +75,7 @@ module.exports = {
 
       await interaction.reply({ embeds: [embed] });
 
-      // Track command usage
+      
       await database.trackCommandUsage('base64', interaction.user.id, interaction.guild?.id);
 
     } catch (error) {
