@@ -1,16 +1,23 @@
 const fs = require('fs').promises;
 const path = require('path');
 const axios = require('axios');
-const config = require('../config/config');
 
 class Database {
   constructor() {
     this.cache = new Map();
     
-    
-    const currentConfig = typeof config.getCurrentConfig === 'function' 
-      ? config.getCurrentConfig() 
-      : config;
+    // Use default configuration values
+    const currentConfig = {
+      compression: true,
+      maxBackups: 10,
+      maxCacheSize: 1000,
+      database: {
+        autoBackup: true,
+        persistCache: true,
+        compressionLevel: 6
+      },
+      maxFileSize: 10 * 1024 * 1024 // 10MB
+    };
     
     // GitHub configuration
     this.githubToken = process.env.GITHUB_TOKEN;
@@ -619,10 +626,18 @@ class Database {
       const configData = await fs.readFile(this.configPath, 'utf8');
       this.config = JSON.parse(configData);
     } catch (error) {
-      // Get current config for defaults
-      const currentConfig = typeof config.getCurrentConfig === 'function' 
-        ? config.getCurrentConfig() 
-        : config;
+      // Use default config values
+      const currentConfig = {
+        compression: true,
+        maxBackups: 10,
+        maxCacheSize: 1000,
+        database: {
+          autoBackup: true,
+          persistCache: true,
+          compressionLevel: 6
+        },
+        maxFileSize: 10 * 1024 * 1024 // 10MB
+      };
       
       // Create default config if doesn't exist
       this.config = {
