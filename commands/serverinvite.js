@@ -44,7 +44,7 @@ module.exports = {
         reason: `Created by ${interaction.user.tag}`,
       });
 
-      // Log invite creation
+      
       const action = {
         type: 'createinvite',
         code: invite.code,
