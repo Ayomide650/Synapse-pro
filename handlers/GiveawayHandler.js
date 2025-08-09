@@ -5,7 +5,7 @@ const database = require('../utils/database');
 class GiveawayHandler {
   constructor(client) {
     this.client = client;
-    this.checkInterval = 30000; // Check every 30 seconds
+    this.checkInterval = 30000; 
   }
 
   async start() {
