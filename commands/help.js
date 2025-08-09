@@ -4,6 +4,8 @@ const path = require('path');
 const fs = require('fs');
 
 module.exports = {
+  name: 'help',
+  description: 'Display help information for commands',
   data: new SlashCommandBuilder()
     .setName('help')
     .setDescription('Get help for a command')
@@ -18,7 +20,7 @@ module.exports = {
     const commands = commandFiles.map(file => require(path.join(commandsDir, file)));
 
     if (!commandName) {
-      
+      // List all commands
       const embed = new EmbedBuilder()
         .setTitle('📖 Command List')
         .setDescription(commands.map(cmd => `• **/${cmd.name || cmd.data.name}** - ${cmd.description || cmd.data.description}`).join('\n'))
