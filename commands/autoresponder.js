@@ -3,6 +3,8 @@ const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('disc
 const database = require('../utils/database');
 
 module.exports = {
+  name: 'autoresponder',
+  description: 'Set up automatic responses to specific keywords or phrases',
   data: new SlashCommandBuilder()
     .setName('autoresponder')
     .setDescription('Manage auto-responses to keywords')
@@ -48,7 +50,7 @@ module.exports = {
     try {
       await interaction.deferReply();
       
-      
+      // Track command usage
       await database.trackCommandUsage('autoresponder', interaction.user.id, interaction.guild.id);
 
       const subcommand = interaction.options.getSubcommand();
