@@ -1,6 +1,6 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const database = require('../utils/database');
-
+//
 module.exports = {
   name: 'userinfo',
   description: 'Displays comprehensive information about a user.',
