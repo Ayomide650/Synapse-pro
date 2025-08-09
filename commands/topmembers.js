@@ -1,8 +1,10 @@
 
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const database = require('../utils/database');
-//
+
 module.exports = {
+  name: 'topmembers',
+  description: 'Display the most active members ranked by messages or voice activity',
   data: new SlashCommandBuilder()
     .setName('topmembers')
     .setDescription('Show the most active members by messages or voice time')
