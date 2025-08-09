@@ -88,7 +88,7 @@ class ModerationHandler {
   }
 
   async checkTimeouts() {
-    // Discord handles timeouts automatically, but we can clean up our records
+    
     try {
       const data = await database.read('moderation/temp_punishments.json');
       if (!data.timeouts) return;
