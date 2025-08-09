@@ -34,7 +34,7 @@ module.exports = {
       const oldNickname = member.nickname;
       await member.setNickname(newNickname || null);
 
-      // Log nickname change
+      
       const action = {
         type: 'nickname',
         user: member.user.tag,
