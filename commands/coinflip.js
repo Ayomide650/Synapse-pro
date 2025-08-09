@@ -2,6 +2,8 @@ const { SlashCommandBuilder } = require('discord.js');
 const database = require('../utils/database');
 
 module.exports = {
+  name: 'coinflip',
+  description: 'Flip a coin and bet coins on the outcome',
   data: new SlashCommandBuilder()
     .setName('coinflip')
     .setDescription('Flip a coin to win or lose coins')
