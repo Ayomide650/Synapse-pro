@@ -84,7 +84,7 @@ module.exports = {
       for (let i = 0; i < count; i++) {
         let password = '';
         
-        // Ensure at least one character from each selected type
+        
         if (includeLowercase) password += lowercase[Math.floor(Math.random() * lowercase.length)];
         if (includeUppercase) password += uppercase[Math.floor(Math.random() * uppercase.length)];
         if (includeNumbers) password += numbers[Math.floor(Math.random() * numbers.length)];
