@@ -3,7 +3,7 @@ const axios = require('axios');
 const database = require('../utils/database');
 
 const WEATHER_API_KEY = '33133755e9ca4490862114921250608';
-const BASE_URL = 'https://api.weatherapi.com/v1'; // Changed to HTTPS
+const BASE_URL = 'https://api.weatherapi.com/v1'; 
 
 module.exports = {
   data: new SlashCommandBuilder()
