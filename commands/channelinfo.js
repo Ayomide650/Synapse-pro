@@ -35,7 +35,7 @@ module.exports = {
         { name: 'Topic', value: channel.topic || 'None' },
         { name: 'Permission Overwrites', value: overwrites.length ? overwrites.join('\n') : 'None' },
       ]);
-
+    //
     await interaction.reply({ embeds: [embed] });
   },
 };
