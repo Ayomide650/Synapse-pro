@@ -2,6 +2,8 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const database = require('../utils/database');
 
 module.exports = {
+  name: 'stats',
+  description: 'View comprehensive server activity statistics and analytics',
   data: new SlashCommandBuilder()
     .setName('stats')
     .setDescription('View server activity statistics')
